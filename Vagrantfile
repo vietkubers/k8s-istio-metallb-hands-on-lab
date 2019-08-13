@@ -19,13 +19,13 @@ boxes = [
     {
         :name => "k8s-worker1",
         :enp0s8 => "192.168.205.11",
-        :mem => "2048",
+        :mem => "4096",
         :cpu => "2"
     },
     {
         :name => "k8s-worker2",
         :enp0s8 => "192.168.205.12",
-        :mem => "2048",
+        :mem => "4096",
         :cpu => "2"
     }
 ]
@@ -48,7 +48,7 @@ Vagrant.configure(2) do |config|
           v.customize ["modifyvm", :id, "--cpus", opts[:cpu]]
         end
 
-        config.vm.network :private_network, ip: opts[:enp0s8], auto_config: false
+        config.vm.network :private_network, ip: opts[:enp0s8], auto_config: true
         if Vagrant.has_plugin?("vagrant-proxyconf")
           config.proxy.http     = "http://10.164.177.170:8080/"
           config.proxy.https    = "http://10.164.177.170:8080/"
