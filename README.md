@@ -74,6 +74,39 @@ for i in install/kubernetes/helm/istio-init/files/crd*yaml; do kubectl apply -f 
 kubectl apply -f install/kubernetes/istio-demo.yaml
 ```
 
+## Installing LoadBalancer
+Let deploy [`MetalLB`](https://metallb.universe.tf/) in order to access Bookinfo App from outside of the cluster.
+
+![BGP](illustrations/BGP.jpg)
+
+```console
+kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
+```
+This will deploy MetalLB to K8s cluster, under the `metallb-system` namespace.
+
+Creating `configmap.yaml`, the following configuration gives MetalLB control over IPs from `192.168.205.20` to `192.168.205.30`
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: 
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - 192.168.205.20-192.168.205.30
+```
+
+```console
+kubectl apply -f configmap.yaml
+kubectl get pods -n metallb-system
+```
+
+
 ## Installing Bookinfo application
 
 #### 1. Label the namespace that will host the application with `istio-injection=enabled`
@@ -83,11 +116,7 @@ kubectl label namespace default istio-injection=enabled
 
 #### 2. Deploy Bookinfo application
 
-Deploying Bookinfo with multiple replicas. Change all replicas from 1 to 2.
-
-```console
-vim samples/bookinfo/platform/kube/bookinfo.yaml
-```
+Deploying Bookinfo with multiple replicas. Changing all replicas from 1 to 2 and adding `type: LoadBalancer` below spec of each Service in `samples/bookinfo/platform/kube/bookinfo.yaml`.
 
 ```console
 kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
@@ -141,34 +170,3 @@ curl -s http://${GATEWAY_URL}/productpage | grep -o "<title>.*</title>"
 <title>Simple Bookstore App</title>
 ```
 
-## Installing LoadBalancer
-Let deploy [`MetalLB`](https://metallb.universe.tf/) in order to access Bookinfo App from outside of the cluster.
-
-![BGP](illustrations/BGP.jpg)
-
-```console
-kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
-```
-This will deploy MetalLB to K8s cluster, under the `metallb-system` namespace.
-
-Creating `configmap.yaml`, the following configuration gives MetalLB control over IPs from `192.168.205.20` to `192.168.205.30`
-
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: metallb-system
-  name: config
-data:
-  config: 
-    address-pools:
-    - name: default
-      protocol: layer2
-      addresses:
-      - 192.168.205.20-192.168.205.30
-```
-
-```console
-kubectl apply -f configmap.yaml
-kubectl get pods -n metallb-system
-```
