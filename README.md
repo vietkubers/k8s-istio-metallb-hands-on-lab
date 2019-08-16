@@ -79,7 +79,7 @@ data:
     - name: default
       protocol: layer2
       addresses:
-      - 192.168.205.20-192.168.205.30
+      - 10.164.178.236-10.164.178.237
 ```
 
 ```console
