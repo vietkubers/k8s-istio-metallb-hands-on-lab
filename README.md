@@ -32,25 +32,25 @@ vagrant ssh k8s-master (or k8s-worker1 / k8s-worker2)
 
 #### 3. Deploying K8s cluster
 
-3.1. Deploying Master node (In case of using flannel overlay network)
+**3.1. Deploying Master node (In case of using flannel overlay network)**
 ```console
 sudo kubeadm init --apiserver-advertise-address=<PRIVATE-MASTER-IP> --pod-network-cidr=10.244.0.0/16
 ```
 In this lab, \<PRIVATE-MASTER-IP\>=192.168.205.10
 
-3.2. Start using cluster
+**3.2. Start using cluster**
 ```console
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-3.3. Applying a pod network
+**3.3. Applying a pod network**
 ```console
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
 ```
 
-3.4. Joining `k8s-worker1` and `k8s-worker2` to the cluster
+**3.4. Joining `k8s-worker1` and `k8s-worker2` to the cluster**
 ```console
 sudo kubeadm join <PRIVATE-MASTER-IP>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
 ```
