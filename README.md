@@ -133,3 +133,32 @@ curl -s http://${GATEWAY_URL}/productpage | grep -o "<title>.*</title>"
 
 <title>Simple Bookstore App</title>
 ```
+
+## Installing LoadBalancer
+Let deploy [`MetalLB`](https://metallb.universe.tf/) in order to access Bookinfo App from outside of the cluster.
+```console
+kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
+```
+This will deploy MetalLB to K8s cluster, under the `metallb-system` namespace.
+
+Creating `configmap.yaml`, the following configuration gives MetalLB control over IPs from `192.168.205.20` to `192.168.205.30`
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: 
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - 192.168.205.20-192.168.205.30
+```
+
+```console
+kubectl apply -f configmap.yaml
+kubectl get pods -n metallb-system
+```
