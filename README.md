@@ -143,6 +143,9 @@ curl -s http://${GATEWAY_URL}/productpage | grep -o "<title>.*</title>"
 
 ## Installing LoadBalancer
 Let deploy [`MetalLB`](https://metallb.universe.tf/) in order to access Bookinfo App from outside of the cluster.
+
+![BGP](illustrations/BGP.jpg)
+
 ```console
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
 ```
