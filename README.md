@@ -82,6 +82,13 @@ kubectl label namespace default istio-injection=enabled
 ```
 
 #### 2. Deploy Bookinfo application
+
+Deploying Bookinfo with multiple replicas. Change all replicas from 1 to 2.
+
+```console
+vim samples/bookinfo/platform/kube/bookinfo.yaml
+```
+
 ```console
 kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 ```
