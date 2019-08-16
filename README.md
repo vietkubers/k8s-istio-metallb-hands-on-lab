@@ -116,7 +116,27 @@ kubectl label namespace default istio-injection=enabled
 
 #### 2. Deploy Bookinfo application
 
-Deploying Bookinfo with multiple replicas. Changing all replicas from 1 to 2 and adding `type: LoadBalancer` below spec of each Service in `samples/bookinfo/platform/kube/bookinfo.yaml`.
+Deploying Bookinfo with multiple replicas. Changing all replicas from 1 to 2 and adding `type: LoadBalancer` below spec of **Productpage services** in `samples/bookinfo/platform/kube/bookinfo.yaml`.
+
+```yaml
+##################################################################################################
+# Productpage services
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: productpage
+  labels:
+    app: productpage
+    service: productpage
+spec:
+  ports:
+  - port: 9080
+    name: http
+  selector:
+    app: productpage
+  type: LoadBalancer
+```
 
 ```console
 kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
