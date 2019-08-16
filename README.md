@@ -58,14 +58,13 @@ sudo kubeadm join <PRIVATE-MASTER-IP>:6443 --token <token> --discovery-token-ca-
 ## Installing LoadBalancer
 Let deploy [`MetalLB`](https://metallb.universe.tf/) in order to access Bookinfo App from outside of the cluster.
 
-![BGP](illustrations/BGP.jpg)
 
 ```console
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
 ```
 This will deploy MetalLB to K8s cluster, under the `metallb-system` namespace.
 
-Creating `configmap.yaml`, the following configuration gives MetalLB control over IPs from `192.168.205.20` to `192.168.205.30`
+Creating `configmap.yaml`, the following configuration gives MetalLB control over IPs from `10.164.178.236` to `10.164.178.237`
 
 ```yaml
 apiVersion: v1
@@ -85,6 +84,11 @@ data:
 ```console
 kubectl apply -f configmap.yaml
 kubectl get pods -n metallb-system
+
+NAME                          READY   STATUS    RESTARTS   AGE   IP               NODE          NOMINATED NODE   READINESS GATES
+controller-7cc9c87cfb-5v7dg   1/1     Running   0          32m   10.244.2.33      k8s-worker3   <none>           <none>
+speaker-6ptpj                 1/1     Running   0          32m   10.164.178.233   k8s-worker1   <none>           <none>
+speaker-nd6qb                 1/1     Running   0          32m   10.164.178.235   k8s-worker3   <none>           <none>
 ```
 
 ## Installing Istio
@@ -162,10 +166,10 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 ```
 
 #### 3. Confirm the app is accessible from outside the cluster
-Using web browser and goto `http://10.164.178.237:9080/productpage` or:
+Using web browser and goto [`http://10.164.178.237:9080/productpage`](http://10.164.178.237:9080/productpage) or:
 ```console
 curl -s http://10.164.178.237:9080/productpage | grep -o "<title>.*</title>"
 
 <title>Simple Bookstore App</title>
 ```
-
+![productpage](illustrations/productpage.PNG)
