@@ -62,9 +62,37 @@ Let deploy [`MetalLB`](https://metallb.universe.tf/) in order to access Bookinfo
 ```console
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifests/metallb.yaml
 ```
+
 This will deploy MetalLB to K8s cluster, under the `metallb-system` namespace.
 
-Creating `configmap.yaml`, the following configuration gives MetalLB control over IPs from `10.164.178.236` to `10.164.178.237`
+#### Setting up bpg router (For BGP mode)
+
+1. create bgp router with vyos
+```console
+cd k8s-istio-metallb-hands-on-lab/k8s-cluster
+vagrant up
+```
+2. setting bgp router
+``` console
+vagrant ssh bgp-router
+configure
+set protocols bgp 64512
+set protocols bgp 64512 parameters router-id 192.168.205.1
+set protocols bgp 64512 neighbor 192.168.205.11 remote-as 64512
+set protocols bgp 64512 neighbor 192.168.205.12 remote-as 64512
+set protocols bgp 64512 maximum-paths ibgp 2
+commit
+save
+exit
+```
+3. Show bgp configure
+``` console
+show ip bgp neighbors
+```
+
+#### Allocate external Ips for loadbalancer
+
+[ARP Mode] Creating `configmap.yaml`, the following configuration gives MetalLB control over IPs from `10.164.178.236` to `10.164.178.237`
 
 ```yaml
 apiVersion: v1
@@ -81,6 +109,28 @@ data:
       - 10.164.178.236-10.164.178.237
 ```
 
+[BGP mode] Creating `configmap.yaml` as below:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    peers:
+    - peer-address: 192.168.205.1
+      peer-asn: 64512
+      my-asn: 64512
+    address-pools:
+    - name: default
+      protocol: bgp
+      addresses:
+      - 192.168.205.224/27
+```
+
+#### Apply configuration
 ```console
 kubectl apply -f configmap.yaml
 kubectl get pods -n metallb-system
