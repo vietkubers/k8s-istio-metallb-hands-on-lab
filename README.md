@@ -65,7 +65,7 @@ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.7.3/manifes
 
 This will deploy MetalLB to K8s cluster, under the `metallb-system` namespace.
 
-#### Setting up bpg router (For BGP mode)
+#### Setting up bgp router (For BGP mode)
 
 1. create bgp router with vyos
 ```console
