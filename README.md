@@ -218,7 +218,7 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 #### 3. Confirm the app is accessible from outside the cluster
 Using web browser and goto [`http://192.168.205.16:9080/productpage`](http://10.164.178.237:9080/productpage) or:
 ```console
-curl -s http://10.164.178.237:9080/productpage | grep -o "<title>.*</title>"
+curl -s http://192.168.205.16:9080/productpage | grep -o "<title>.*</title>"
 
 <title>Simple Bookstore App</title>
 ```
