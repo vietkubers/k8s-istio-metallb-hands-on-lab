@@ -196,7 +196,27 @@ spec:
 kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 ```
 
-Confirm all services are correctly defined and running.
+Confirm all services and pods are correctly defined and running.
+```console
+master@k8s-master:~/istio-1.1.0$ kubectl get pod
+
+NAME                              READY   STATUS    RESTARTS   AGE
+details-v1-69658dcf78-mrjk4       2/2     Running   0          112m
+details-v1-69658dcf78-qqw9h       2/2     Running   0          112m
+example-appservice-pod            2/2     Running   50         2d2h
+hello-operator-7b59567fd9-zh5tl   2/2     Running   3          2d2h
+productpage-v1-6b6798cb84-2zckc   2/2     Running   0          112m
+productpage-v1-6b6798cb84-nj5tp   2/2     Running   0          112m
+ratings-v1-6f97d68b6-jxb5l        2/2     Running   0          112m
+ratings-v1-6f97d68b6-mh66q        2/2     Running   0          112m
+reviews-v1-7c98dcd6dc-fn7rd       2/2     Running   0          112m
+reviews-v1-7c98dcd6dc-kmqxn       2/2     Running   0          112m
+reviews-v2-6677766d47-hl9lh       2/2     Running   0          112m
+reviews-v2-6677766d47-wzr8l       2/2     Running   0          112m
+reviews-v3-79f9bcc54c-cfsvf       2/2     Running   0          112m
+reviews-v3-79f9bcc54c-kj6zb       2/2     Running   0          112m
+```
+
 
 ```console
 master@k8s-master:~/istio-1.1.0$ sudo kubectl get svc
