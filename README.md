@@ -133,7 +133,7 @@ data:
 #### Apply configuration
 ```console
 kubectl apply -f configmap.yaml
-kubectl get pods -n metallb-system
+kubectl get pods -n metallb-system -o wide
 
 NAME                          READY   STATUS    RESTARTS   AGE   IP               NODE          NOMINATED NODE   READINESS GATES
 controller-7cc9c87cfb-5v7dg   1/1     Running   0          32m   10.244.2.33      k8s-worker2   <none>           <none>
