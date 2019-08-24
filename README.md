@@ -136,9 +136,9 @@ kubectl apply -f configmap.yaml
 kubectl get pods -n metallb-system
 
 NAME                          READY   STATUS    RESTARTS   AGE   IP               NODE          NOMINATED NODE   READINESS GATES
-controller-7cc9c87cfb-5v7dg   1/1     Running   0          32m   10.244.2.33      k8s-worker3   <none>           <none>
-speaker-6ptpj                 1/1     Running   0          32m   192.168.205.11   k8s-worker1   <none>           <none>
-speaker-nd6qb                 1/1     Running   0          32m   192.168.205.12   k8s-worker2   <none>           <none>
+controller-7cc9c87cfb-5v7dg   1/1     Running   0          32m   10.244.2.33      k8s-worker2   <none>           <none>
+speaker-6ptpj                 1/1     Running   0          32m   10.164.178.233   k8s-worker1   <none>           <none>
+speaker-nd6qb                 1/1     Running   0          32m   10.164.178.234   k8s-worker2   <none>           <none>
 ```
 
 ## Installing Istio
@@ -223,7 +223,7 @@ master@k8s-master:~/istio-1.1.0$ sudo kubectl get svc
 NAME          TYPE           CLUSTER-IP       EXTERNAL-IP      PORT(S)          AGE
 details       ClusterIP      10.100.126.18    <none>           9080/TCP         19m
 kubernetes    ClusterIP      10.96.0.1        <none>           443/TCP          4h57m
-productpage   LoadBalancer   10.105.200.30    192.168.205.16   9080:30118/TCP   19m
+productpage   LoadBalancer   10.105.200.30    10.164.178.237   9080:30118/TCP   19m
 ratings       ClusterIP      10.110.246.171   <none>           9080/TCP         19m
 reviews       ClusterIP      10.103.133.5     <none>           9080/TCP         19m
 ```
@@ -236,9 +236,9 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 ```
 
 #### 3. Confirm the app is accessible from outside the cluster
-Using web browser and goto [`http://192.168.205.16:9080/productpage`](http://10.164.178.237:9080/productpage) or:
+Using web browser and goto [`http://10.164.178.237:9080/productpage`](http://10.164.178.237:9080/productpage) or:
 ```console
-curl -s http://192.168.205.16:9080/productpage | grep -o "<title>.*</title>"
+curl -s http://10.164.178.237:9080/productpage | grep -o "<title>.*</title>"
 
 <title>Simple Bookstore App</title>
 ```
