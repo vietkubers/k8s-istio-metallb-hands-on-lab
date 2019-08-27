@@ -55,6 +55,12 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8
 sudo kubeadm join <PRIVATE-MASTER-IP>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
 ```
 
+**3.5 Enable bash completion for kubectl**
+append the following line to /etc/profile
+``` console
+source <(kubectl completion bash)
+```
+
 ## Installing LoadBalancer
 Let deploy [`MetalLB`](https://metallb.universe.tf/) in order to access Bookinfo App from outside of the cluster.
 
