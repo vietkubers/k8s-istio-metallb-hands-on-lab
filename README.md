@@ -51,6 +51,16 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8
 ```
 
 **3.4. Joining `k8s-worker1` and `k8s-worker2` to the cluster**
+
+Add worker node's ip to kubelet configuration by append line: Environment="KUBELET_EXTRA_ARGS =--node-ip=[worker's ip]" to /etc/systemd/system/kubelet.service.d/10-kubeadm.conf.
+
+Restart kubelet service:
+``` console
+sudo systemctl daemon-reload && sudo systemctl restart kubelet
+```
+
+Join:
+
 ```console
 sudo kubeadm join <PRIVATE-MASTER-IP>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
 ```
