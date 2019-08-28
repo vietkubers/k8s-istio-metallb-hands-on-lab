@@ -1,5 +1,7 @@
 # Bare metal cluster with Kubernetes, Istio & MetalLB
-This github repository is material of a presentation of VietKubers core-team at OpenInfra Days Vietnam 2019
+This github repository is material of a presentation of VietKubers core-team at [OpenInfra Days Vietnam 2019](https://2019.vietopeninfra.org/)  
+
+**Download Slides** [here](https://github.com/vietkubers/Documents/blob/master/VietOpenInfraDay2019/Bare%20metal%20cluster%20with%20Kubernetes%2C%20Istio%20%26%20MetalLB.pdf)
 
 ## Requirements
 >This lab is carried out on Ubuntu 16.04
